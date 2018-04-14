@@ -55,7 +55,6 @@ goto Deployment
 
 :SelectPythonVersion
 
-
 SET PYTHON_RUNTIME=python-3.5
 SET PYTHON_VER=3.5
 SET PYTHON_EXE=%SYSTEMDRIVE%\home\python354x64\python.exe
