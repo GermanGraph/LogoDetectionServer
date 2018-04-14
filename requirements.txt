@@ -9,7 +9,6 @@ selectivesearch==0.4
 scipy==1.0.0
 matplotlib==2.0.2
 Pillow==5.1.0
-skimage==0.0
 scikit_learn==0.19.1
 
 
