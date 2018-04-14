@@ -1,9 +1,9 @@
 pip==9.0.1
+tensorflow==1.6.0
 Flask==0.12.1
 ImageHash==4.0
 tqdm==4.19.8
 scikit_image==0.13.1
-opencv_python==3.4.0.12
 six==1.11.0
 numpy==1.14.2
 selectivesearch==0.4
@@ -12,5 +12,5 @@ matplotlib==2.0.2
 Pillow==5.1.0
 skimage==0.0
 scikit_learn==0.19.1
-tensorflow==1.6.0
+
 
