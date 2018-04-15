@@ -4,6 +4,7 @@ from flask import Flask, request, send_file
 from flask.json import jsonify
 import detect_logo
 import os
+import ptvs_virtualenv_proxy
 import io
 from werkzeug.utils import secure_filename
 
@@ -46,9 +47,13 @@ def upload_file():
 
 @app.route('/')
 def hello_world():
+    print("loading")
+    ptvs_virtualenv_proxy.log("loading 1")
     graph_params, sess = detect_logo.init_tf()
+    print("finished")
+    ptvs_virtualenv_proxy.log("finished 1")
     img = detect_logo.main(
-        "test.jpg", graph_params=graph_params, sess=sess)
+        "dhl.jpg", graph_params=graph_params, sess=sess)
     return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
 
 

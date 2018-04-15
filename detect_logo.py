@@ -20,10 +20,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import argparse
 import os
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from io import BytesIO
@@ -78,6 +75,7 @@ def setup_graph():
         graph_params['saver'] = tf.train.Saver()
     return graph_params
 
+
 def init_tf():
     # Setup computation graph
     graph_params = setup_graph()
@@ -93,8 +91,8 @@ def init_tf():
         print('Initialized')
     return graph_params, sess
 
-def main(file_name='', graph_params={}, sess={}):
-    #args = parse_cmdline()
+
+def main(file_name, graph_params, sess):
     img_fn = os.path.join("images", file_name)
     if not os.path.exists(img_fn):
         print('Not found: {}'.format(img_fn))
@@ -104,6 +102,7 @@ def main(file_name='', graph_params={}, sess={}):
 
     # Load target image
     target_image = util.load_target_image(img_fn)
+
     #cv.normalize(target_image, target_image, 0, 255, cv.NORM_MINMAX)
     # limg = np.arcsinh(target_image)
     # limg /= limg.max()
@@ -114,7 +113,7 @@ def main(file_name='', graph_params={}, sess={}):
     # target_image = target_image.astype(np.float64)
 
     # Get object proposals
-    object_proposals = util.get_object_proposals(target_image)    
+    object_proposals = util.get_object_proposals(target_image)
 
     # Logo recognition
     results = []
@@ -154,7 +153,3 @@ def main(file_name='', graph_params={}, sess={}):
     plt.savefig(img, bbox_inches='tight', pad_inches=0)
     img.seek(0)
     return img
-    
-
-if __name__ == '__main__':
-    main()
