@@ -34,6 +34,8 @@ import preprocess
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import util
 import skimage.draw
+import matplotlib
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
