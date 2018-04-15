@@ -8,7 +8,7 @@ def hello_world():
     predictor = detect_logo.main('test.jpg')
   except Exception as e:
     return e
-  return predictor
+  return predictor + "from yury"
 
 if __name__ == '__main__':
   app.run()
