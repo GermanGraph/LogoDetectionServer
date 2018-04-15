@@ -36,10 +36,9 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            graph_params, sess = detect_logo.init_tf()
             detect_logo.main(
                 filename, graph_params=graph_params, sess=sess)
-            #return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
+            # return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
             return send_file(os.path.join("results", filename))
     except Exception as e:
         bad_request(e)
@@ -47,15 +46,13 @@ def upload_file():
 
 @app.route('/')
 def hello_world():
-    print("loading")
-    filename = "dhl.jpg"
-    graph_params, sess = detect_logo.init_tf()
-    print("finished")
+    filename = "test.jpg"
     detect_logo.main(
         filename, graph_params=graph_params, sess=sess)
-    #return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
+    # return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
     return send_file(os.path.join("results", filename))
 
+
 if __name__ == '__main__':
-    
+    graph_params, sess = detect_logo.init_tf()
     app.run()
