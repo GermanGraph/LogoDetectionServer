@@ -23,7 +23,7 @@
 import os
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from io import BytesIO
+#from io import BytesIO
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
@@ -148,8 +148,8 @@ def main(file_name, graph_params, sess):
             (x, y), w, h, fill=False, edgecolor='red', linewidth=1)
         ax.add_patch(rect)
 
-    img = BytesIO()
+    #img = BytesIO()
     plt.tight_layout()
-    plt.savefig(img, bbox_inches='tight', pad_inches=0)
-    img.seek(0)
-    return img
+    plt.savefig(os.path.join("results", file_name), bbox_inches='tight', pad_inches=0)
+    #img.seek(0)
+    #return img
