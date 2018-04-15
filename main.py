@@ -47,11 +47,11 @@ def upload_file():
 
 @app.route('/')
 def hello_world():
-    #predictor = detect_logo.main('test.jpg') 
-    return "hello"#predictor
+    predictor = detect_logo.main(
+        'test.jpg', graph_params=graph_params, sess=sess)
+    return predictor
 
 
 if __name__ == '__main__':
-    os.makedirs("images", exist_ok=True)
-    #graph_params, sess = detect_logo.init_tf()
+    graph_params, sess = detect_logo.init_tf()
     app.run()
