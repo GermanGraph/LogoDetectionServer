@@ -4,7 +4,10 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-  predictor = detect_logo.main('test.jpg')
+  try:
+    predictor = detect_logo.main('test.jpg')
+  except Exception as e:
+    return e
   return predictor
 
 if __name__ == '__main__':
