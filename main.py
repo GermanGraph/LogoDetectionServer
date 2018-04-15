@@ -47,8 +47,8 @@ def upload_file():
 
 @app.route('/')
 def hello_world():
-    predictor = detect_logo.main('test.jpg') 
-    return predictor
+    #predictor = detect_logo.main('test.jpg') 
+    return "hello"#predictor
 
 
 if __name__ == '__main__':
