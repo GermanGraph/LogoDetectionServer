@@ -30,12 +30,13 @@ import common
 import model
 import argparse
 import os
-from io import BytesIO
+import preprocess
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import util
-import preprocess
+import skimage.draw
+import matplotlib
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import matplotlib.patches as mpatches
 
 
@@ -83,7 +84,22 @@ def setup_graph():
         graph_params['saver'] = tf.train.Saver()
     return graph_params
 
-def init_tf():
+
+def main(filename=''):
+    #args = parse_cmdline()
+    img_fn = filename #os.path.abspath(args.img_fn)
+    if not os.path.exists(img_fn):
+        print('Not found: {}'.format(img_fn))
+        sys.exit(-1)
+    else:
+        print('Target image: {}'.format(img_fn))
+
+    # Loaa target image
+    target_image = util.load_target_image(img_fn)
+
+    # Get object proposals
+    object_proposals = util.get_object_proposals(target_image)
+
     # Setup computation graph
     graph_params = setup_graph()
 
@@ -96,30 +112,6 @@ def init_tf():
         print('Model restored')
     else:
         print('Initialized')
-    return graph_params, sess
-
-def main(file_name='', graph_params={}, sess={}):
-    #args = parse_cmdline()
-    img_fn = os.path.join("images", file_name)
-    if not os.path.exists(img_fn):
-        print('Not found: {}'.format(img_fn))
-        sys.exit(-1)
-    else:
-        print('Target image: {}'.format(img_fn))
-
-    # Load target image
-    target_image = util.load_target_image(img_fn)
-    #cv.normalize(target_image, target_image, 0, 255, cv.NORM_MINMAX)
-    # limg = np.arcsinh(target_image)
-    # limg /= limg.max()
-    # low = np.percentile(limg, 0.25)
-    # high = np.percentile(limg, 99.5)
-    # opt_img = skie.exposure.rescale_intensity(limg, in_range=(low, high))
-    # target_image = opt_img
-    # target_image = target_image.astype(np.float64)
-
-    # Get object proposals
-    object_proposals = util.get_object_proposals(target_image)    
 
     # Logo recognition
     results = []
@@ -136,30 +128,28 @@ def main(file_name='', graph_params={}, sess={}):
     results = np.delete(results, del_idx)
 
     # Non-max suppression
-    nms_results = util.nms(results, pred_prob_th=0.9, iou_th=0.4)
+    nms_results = util.nms(results, pred_prob_th=0.85, iou_th=0.4)
 
     # Draw rectangles on the target image
     fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(6, 6))
     ax.imshow(target_image)
+    return_value = ''
     for result in nms_results:
-        print(result)
+        return_value += str(result['pred_class'])+ ' ' + str(result['pred_prob']) + '\n'
         (x, y, w, h) = result['obj_proposal']
         ax.text(
             x,
             y,
-            "{} {:.2f}".format(result['pred_class'], result['pred_prob']),
+            result['pred_class'],
             fontsize=13,
             bbox=dict(facecolor='red', alpha=0.7))
         rect = mpatches.Rectangle(
             (x, y), w, h, fill=False, edgecolor='red', linewidth=1)
         ax.add_patch(rect)
+    #ax.imshow(target_image)
+    #plt.show()
+    return return_value
 
-    img = BytesIO()
-    plt.tight_layout()
-    plt.savefig(img, bbox_inches='tight', pad_inches=0)
-    img.seek(0)
-    return img
-    
 
 if __name__ == '__main__':
     main()
