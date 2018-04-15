@@ -39,7 +39,7 @@ def upload_file():
             # img = detect_logo.main(
             #     filename, graph_params=graph_params, sess=sess)
             print("lol")
-            return "hello"
+            return "hello new"
             #return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
     except Exception as e:
         bad_request(e)
@@ -47,11 +47,12 @@ def upload_file():
 
 @app.route('/')
 def hello_world():
+    graph_params, sess = detect_logo.init_tf()
     predictor = detect_logo.main(
         'test.jpg', graph_params=graph_params, sess=sess)
     return predictor
 
 
 if __name__ == '__main__':
-    graph_params, sess = detect_logo.init_tf()
+    
     app.run()
