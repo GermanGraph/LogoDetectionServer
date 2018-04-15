@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = "images"
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg'])
-
+graph_params, sess = detect_logo.init_tf()
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -36,7 +36,7 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            global graph_params, sess
+            #global graph_params, sess
             detect_logo.main(
                 filename, graph_params=graph_params, sess=sess)
             # return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
@@ -48,7 +48,7 @@ def upload_file():
 @app.route('/')
 def hello_world():
     filename = "test.jpg"
-    global graph_params, sess
+    #global graph_params, sess
     detect_logo.main(
         filename, graph_params=graph_params, sess=sess)
     # return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
@@ -56,5 +56,5 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    graph_params, sess = detect_logo.init_tf()
+    
     app.run()
