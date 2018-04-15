@@ -36,23 +36,21 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # img = detect_logo.main(
-            #     filename, graph_params=graph_params, sess=sess)
-            print("lol")
-            return "hello new 12"
-            #return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
+            img = detect_logo.main(
+                filename, graph_params=graph_params, sess=sess)
+            return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
     except Exception as e:
         bad_request(e)
 
 
 @app.route('/')
-def hello_world():    
-    graph_params, sess = detect_logo.init_tf()
-    predictor = detect_logo.main(
-        'test.jpg', graph_params=graph_params, sess=sess)
-    return predictor
+def hello_world():
+    img = detect_logo.main(
+        "test.jpg", graph_params=graph_params, sess=sess)
+    return send_file(io.BytesIO(img.read()), mimetype='image/jpg')
 
 
 if __name__ == '__main__':
-    
+    os.makedirs("images", exist_ok=True)
+    graph_params, sess = detect_logo.init_tf()
     app.run()
