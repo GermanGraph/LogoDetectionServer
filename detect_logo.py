@@ -35,7 +35,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 import util
 import preprocess
 import matplotlib.pyplot as plt
-#from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import matplotlib.patches as mpatches
 
 
